@@ -1,0 +1,137 @@
+" general settings
+set vicmd=$EDITOR
+set syscalls
+set trash
+set trashdir=~/.cache/vifm/Trash
+set history=100
+set nofollowlinks
+set sortnumbers
+set sort+=name
+set undolevels=100
+set vimhelp
+set norunexec
+set wildmenu
+set wildstyle=popup
+set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
+set ignorecase
+set incsearch
+set smartcase
+set hlsearch
+set scrolloff=4
+set tabstop=2
+set number
+set vifminfo=savedirs,bmarks,shistory
+set viewcolumns=*{name}..,6{}.
+set timefmt=%m/%d/%Y\ %H:%M
+set statusline=" %t%= %A %10u:%-7g %15s %20d "
+set rulerformat="%l/%S%[ +%x%]"
+set dotdirs=
+set nodotfiles
+set fastrun
+set noiec
+set showtabline=multiple
+set tablabel=%[(%n)%]%[%[%T{tree}%]%[{%c}%]@%]%p:t
+
+" Colorscheme
+colorscheme iceberg
+
+" File icons
+source ~/.vifm/favicons.vifm
+
+" Marks
+mark c ~/.config/
+mark D ~/Downloads/
+mark H ~/
+mark R /
+
+" Command definitions
+command! mkcd :mkdir %a | cd %a
+command! new  :touch %a | edit %a
+
+" Toggle detailed/brief information about files
+command! togglefilesinfo
+  \ : if &viewcolumns == '*{name}..,6{}.'
+  \ |   set viewcolumns=*{name}.,10{size}.,12{perms},10{uname},-7{gname},18{mtime}
+  \ |   echo 'Files information: detailed'
+  \ | else
+  \ |   set viewcolumns=*{name}..,6{}.
+  \ |   echo 'Files information: brief'
+  \ | endif
+
+" Diff for selections in the current pane if it contains more than one file, otherwise
+" diff the file in the left (upper) pane with the file in the right (lower) pane
+command! diff : if expand('%%c') == expand('%%f')
+  \ |   if paneisat('right') && paneisat('bottom')
+  \ |     execute '!$EDITOR -d %%C %%c'
+  \ |   else
+  \ |     execute '!$EDITOR -d %%c %%C'
+  \ |   endif
+  \ | else
+  \ |   execute '!$EDITOR -d %%f'
+  \ | endif
+
+" Keybindings
+" select files using space key
+nnoremap <Space> t
+" toggle view hidden file
+nnoremap . za
+nnoremap ,E :edit $MYVIFMRC<cr>
+" restart vifm
+nnoremap ,R :restart<cr>
+" open sort menu
+nnoremap ,s :sort<CR>
+" exit vifm and cd to the dir
+nnoremap ,q :shell<CR>
+" preview in another pane
+nnoremap <c-v> :view<CR>
+vnoremap <c-v> :view<CR>gv
+" fast renaming
+nnoremap ,r cw
+" create new dir and cd into it
+nnoremap ,d :mkcd<Space>
+" create new file and edit
+nnoremap ,f :mkvi<Space>
+" toggle file info
+nnoremap <silent> ni :togglefilesinfo<CR>
+
+" file opening and viewing
+" Pdf
+filextype {*.pdf},<application/pdf>,{*.ps,*.eps,*.ps.gz},<application/postscript>,{*.djvu},<image/vnd.djvu>
+        \ {View in zathura}
+        \ zathura %f >/dev/null 2>&1 &
+fileviewer {*.pdf},<application/pdf> pdftotext -nopgbrk %c -
+
+" Image
+filextype {*.jpg,*.jpeg,*.png,*.webp,*.gif,*.raw},<image/*>
+        \ imv %c %d >/dev/null 2>&1 &
+fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
+         \ identify %f
+
+" Audio
+filetype {*.wav,*.mp3,*.flac,*.m4a,*.wma,*.ape,*.ac3,*.og[agx],*.spx,*.opus},<audio/*>
+        \ {Play using MPV}
+        \ mpv %f >/dev/null 2>&1 &,
+        \ {Play using ffplay}
+        \ pkill ffplay; ffplay -nodisp -autoexit %c >/dev/null 2>&1 &,
+        \ {Play using MPlayer}
+        \ mplayer %f >/dev/null 2>&1,
+fileviewer {*.mp3},<audio/mpeg> mp3info
+
+" Video
+filextype {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
+          \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
+          \*.as[fx]},<video/*>
+        \ {Play using MPV}
+        \ mpv %f >/dev/null 2>&1 &,
+        \ {View using ffplay}
+        \ ffplay -fs -autoexit %f >/dev/null 2>&1 &,
+        \ {View using mplayer}
+        \ mplayer %f >/dev/null 2>&1,
+fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
+           \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
+           \*.as[fx]},<video/*>
+        \ ffprobe -pretty %c 2>&1
+
+filetype {*.html,*.htm},<text/html> links, lynx, w3m, firefox
+
+" vim: set et ts=2 sts=2 sw=2 : "

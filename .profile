@@ -19,8 +19,16 @@ export PASSWORD_STORE_DIR="${XDG_DATA_HOME}/password-store"
 export LESSKEY="${XDG_CONFIG_HOME}/less/lesskey"
 export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+export GDK_BACKENED="wayland"
+export MOZ_ENABLE_WAYLAND=1
+
+# NNN file manager
+export NNN_OPTS="aE"
+export NNN_COLORS='#0a1b2c3d;1234'
+export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
 
 # Default applications
+export TERMCMD="foot"
 export TERMINAL="footclient"
 export EDITOR="nvim"
 export BROWSER="firefox"

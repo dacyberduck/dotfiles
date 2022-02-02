@@ -26,7 +26,6 @@ export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 export GDK_BACKENED="wayland"
 export MOZ_ENABLE_WAYLAND=1
-#export GPG_TTY=$(tty)
 
 # Default applications
 export TERMCMD="foot"

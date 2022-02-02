@@ -33,3 +33,6 @@ alias rm='rm -ri'
 alias volume='amixer -D pipewire sset Master '
 alias pfetch='curl -s https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch | bash -'
 alias vi='nvim'
+
+# exports
+export GPG_TTY=$(tty)

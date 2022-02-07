@@ -1,0 +1,123 @@
+" for termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" foot ctrl+key fix
+let &t_TI = "\<Esc>[>4;2m"
+let &t_TE = "\<Esc>[>4m"
+
+" Cycle Tabspace <<<
+function! CycleTabSpace(direction)
+  let l:tablength = &tabstop + a:direction
+  if l:tablength > 8
+    let l:tablength = 2
+  elseif l:tablength < 2
+    let l:tablength = 8
+  endif
+  exec 'set tabstop='.l:tablength
+  exec 'set softtabstop='.l:tablength
+  " print new tablength
+  echo "tabspace = ".l:tablength
+endfunction 
+" >>>
+
+" Settings
+" off <<<
+set nocompatible
+set noconfirm
+set nocursorcolumn
+set nocursorline
+set noerrorbells
+set nojoinspaces
+set nolinebreak
+set nolist
+set nosol
+set nospell
+set nostartofline
+set novisualbell
+set nowrap
+" >>>
+
+" on <<<
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
+set number
+set relativenumber
+set expandtab
+set hlsearch
+set incsearch
+set lazyredraw
+set magic
+set ruler
+set shiftround
+set showcmd
+set noshowmode
+set splitright
+set wildmenu
+set wrapscan
+set termguicolors
+set title
+" set cursorline
+" >>>
+
+" values <<<
+language en_US.UTF-8
+set tabstop=2
+set softtabstop=2
+set shiftwidth=0
+set backupdir=~/.vim/backupdir
+set belloff=all
+set complete=.,w,b,k " u,t,i
+set completeopt=menu,longest,noinsert,noselect
+" set completefunc
+set clipboard+=unnamed,unnamedplus
+set dictionary=/usr/share/dict/words
+set directory=~/.vim/swapdir
+set encoding=utf-8
+set fillchars=vert:│,fold:─
+set foldmarker=<<<,>>>
+set foldmethod=marker
+set formatoptions=jlqr
+" set grepprg=rg\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+set keywordprg=:help
+set laststatus=2
+set listchars+=eol:$,tab:↦\ ,nbsp:_,extends:…,trail:.
+set mouse=a
+set ttymouse=xterm
+set mousemodel=popup_setpos
+set nrformats=bin,hex
+" set pastetoggle=
+set path=.,,**
+set sessionoptions=buffers,curdir
+set shortmess=fIlmnxtToO
+set spelllang=en
+set spellsuggest=9
+set tags=.tags
+set undodir=~/.vim/undodir
+set undolevels=500
+set virtualedit=block
+set diffopt=vertical,filler
+if &diff
+  set cursorbind
+  set scrollbind
+else
+  set nocursorbind
+  set noscrollbind
+endif
+" >>>
+
+" Mappings <<<
+nnoremap ++ :call CycleTabSpace(+1)<CR>
+nnoremap -- :call CycleTabSpace(-1)<CR>
+" >>>
+
+"
+syntax enable
+set background=dark
+colorscheme everforest
+
+nnoremap <A-w> :w!<CR>
+nnoremap <A-q> :bd!<CR>
